@@ -6,15 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ToDoListView: View {
-    var ToDos = ["Learn Swift",
-                 "Build Apps",
-                 "Change the World",
-                 "Bring the Awesome",
-                 
-                 "Take a Vocation"
-    ]
+    @Query var ToDos: [ToDo]
+    @State private var sheetPresented = false
+    @Environment(\.modelContext) var modelContext
     var body: some View {
         NavigationStack {
             //            Notes For 5.2
@@ -53,10 +50,11 @@ struct ToDoListView: View {
             List {
                 ForEach(ToDos, id: \.self) { toDo in
                     NavigationLink {
-                        DetailedView(passedValue: toDo)
+                        DetailedView(ToDo: ToDo())
                     } label: {
-                        Text(toDo)
+                        Text(toDo.item)
                     }
+                    .font(.title2)
                 }
                 
 //                ForEach (0..<100, id: \.self) { number in
@@ -70,10 +68,25 @@ struct ToDoListView: View {
             .navigationTitle("To Do List")
             .navigationBarTitleDisplayMode(.automatic)
             .listStyle(.plain)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        sheetPresented.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .fullScreenCover(isPresented: $sheetPresented) {
+                NavigationStack {
+                    DetailedView(ToDo: ToDo())
+                }
+            }
         }
     }
 }
 
 #Preview {
     ToDoListView()
+        .modelContainer(for: ToDo.self, inMemory: true)
 }
