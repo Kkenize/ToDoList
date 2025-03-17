@@ -9,12 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct DetailedView: View {
+//    @Bindable var ToDo: ToDo
     @State var ToDo: ToDo
     @State private var item = ""
     @State private var reminderIsOn = false
     @State private var isCompleted = false
-//    @State private var dueDate = Date.now + 60*60*24
-    @State private var dueDate = Calendar.current.date(byAdding: .day, value: 1, to: Date.now)!
+    @State private var dueDate = Date.now + 60*60*24
+//    @State private var dueDate = Calendar.current.date(byAdding: .day, value: 1, to: Date.now)!
     @State private var notes = ""
 //    var passedValue: String //Don't initialize it, it will be passed from the parent view
     @Environment(\.modelContext) var modelContext
@@ -22,25 +23,24 @@ struct DetailedView: View {
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         List {
-            TextField("Enter To Do Here", text: $item)
+            TextField("Enter To Do Here", text: $ToDo.item)
                 .font(.title)
                 .textFieldStyle(.roundedBorder)
                 .padding(.vertical)
                 .listRowSeparator(.hidden)
             
-            Toggle("Set Reminder:", isOn: $reminderIsOn)
+            Toggle("Set Reminder:", isOn: $ToDo.reminderIsOn)
                 .padding(.top)
             
-            DatePicker("Date:", selection: $dueDate)
+            DatePicker("Date:", selection: $ToDo.dueDate)
                 .padding(.bottom)
-                .disabled(!reminderIsOn)
+                .disabled(!ToDo.reminderIsOn)
             
-            TextField("Notes", text: $notes, axis: .vertical)
+            TextField("Notes", text: $ToDo.notes, axis: .vertical)
                 .textFieldStyle(.roundedBorder)
                 .listRowSeparator(.hidden)
             
-            Toggle("Completed:", isOn: $isCompleted)
-                .padding(.top)
+            Toggle("Completed:", isOn: $ToDo.isCompleted) .padding(.top)
         }
         .listStyle(.plain)
         .onAppear() {

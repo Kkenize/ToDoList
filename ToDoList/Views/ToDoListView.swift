@@ -50,11 +50,10 @@ struct SortedToDoList: View {
                                 }
                             }
                         
-                        NavigationLink {
-                            DetailedView(ToDo: ToDo())
-                        } label: {
+                        NavigationLink(destination: DetailedView(ToDo: toDo)) {
                             Text(toDo.item)
                         }
+                        
                         //                        .swipeActions {
                         //                        Button("Delete", role: .destructive) {
                         //                            modelContext.delete(toDo)
@@ -72,7 +71,7 @@ struct SortedToDoList: View {
                             .foregroundStyle(.secondary)
                         
                         if toDo.reminderIsOn {
-                            Image(systemName: "calender.badge.clock")
+                            Image(systemName: "calendar.badge.clock")
                                 .symbolRenderingMode(.multicolor)
                         }
                     }
