@@ -10,7 +10,7 @@ import SwiftData
 
 struct DetailedView: View {
 //    @Bindable var ToDo: ToDo
-    @State var ToDo: ToDo
+    @State var toDo: ToDo
     @State private var item = ""
     @State private var reminderIsOn = false
     @State private var isCompleted = false
@@ -23,32 +23,32 @@ struct DetailedView: View {
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         List {
-            TextField("Enter To Do Here", text: $ToDo.item)
+            TextField("Enter To Do Here", text: $item)
                 .font(.title)
                 .textFieldStyle(.roundedBorder)
                 .padding(.vertical)
                 .listRowSeparator(.hidden)
             
-            Toggle("Set Reminder:", isOn: $ToDo.reminderIsOn)
+            Toggle("Set Reminder:", isOn: $reminderIsOn)
                 .padding(.top)
             
-            DatePicker("Date:", selection: $ToDo.dueDate)
+            DatePicker("Date:", selection: $dueDate)
                 .padding(.bottom)
-                .disabled(!ToDo.reminderIsOn)
+                .disabled(!reminderIsOn)
             
-            TextField("Notes", text: $ToDo.notes, axis: .vertical)
+            TextField("Notes", text: $notes, axis: .vertical)
                 .textFieldStyle(.roundedBorder)
                 .listRowSeparator(.hidden)
             
-            Toggle("Completed:", isOn: $ToDo.isCompleted) .padding(.top)
+            Toggle("Completed:", isOn: $isCompleted) .padding(.top)
         }
         .listStyle(.plain)
         .onAppear() {
-            item = ToDo.item
-            reminderIsOn = ToDo.reminderIsOn
-            dueDate = ToDo.dueDate
-            notes = ToDo.notes
-            isCompleted = ToDo.isCompleted
+            item = toDo.item
+            reminderIsOn = toDo.reminderIsOn
+            dueDate = toDo.dueDate
+            notes = toDo.notes
+            isCompleted = toDo.isCompleted
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -59,12 +59,12 @@ struct DetailedView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
-                    ToDo.item = item
-                    ToDo.reminderIsOn = reminderIsOn
-                    ToDo.dueDate = dueDate
-                    ToDo.notes = notes
-                    ToDo.isCompleted = isCompleted
-                    modelContext.insert(ToDo)
+                    toDo.item = item
+                    toDo.reminderIsOn = reminderIsOn
+                    toDo.dueDate = dueDate
+                    toDo.notes = notes
+                    toDo.isCompleted = isCompleted
+                    modelContext.insert(toDo)
                     guard let _ = try? modelContext.save() else {
                         print("Error")
                         return
@@ -101,7 +101,7 @@ struct DetailedView: View {
 
 #Preview {
     NavigationStack {
-        DetailedView(ToDo: ToDo())
+        DetailedView(toDo: ToDo())
             .modelContainer(for: ToDo.self,
                             inMemory: true)
     }

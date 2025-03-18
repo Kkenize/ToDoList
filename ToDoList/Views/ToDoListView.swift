@@ -50,7 +50,7 @@ struct SortedToDoList: View {
                                 }
                             }
                         
-                        NavigationLink(destination: DetailedView(ToDo: toDo)) {
+                        NavigationLink(destination: DetailedView(toDo: toDo)) {
                             Text(toDo.item)
                         }
                         
@@ -158,7 +158,7 @@ struct ToDoListView: View {
                 }
                 .fullScreenCover(isPresented: $sheetPresented) {
                     NavigationStack {
-                        DetailedView(ToDo: ToDo())
+                        DetailedView(toDo: ToDo())
                     }
                 }
         }
